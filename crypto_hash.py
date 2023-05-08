@@ -1,8 +1,6 @@
 import hashlib
 import json
 
-def stringify(data):
-    return json.dumps(data)
 def cryptoHash(*args):
     """
     Return a SHA256 hash of the given arguments
