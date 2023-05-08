@@ -1,5 +1,5 @@
 import time
-from crypto_hash import cryptoHash
+from backend.utils.crypto_hash import cryptoHash
 
 class Block:
     """
