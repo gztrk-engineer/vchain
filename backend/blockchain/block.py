@@ -5,7 +5,9 @@ GENESIS_DATA = {
     "timestamp": 1,
     "lastHash": "genesisLastHash",
     "hash": "genesisHash",
-    "data": []
+    "data": [],
+    "difficulty": 3,
+    "nonce": "genesisNonce"
 }
 
 class Block:
@@ -14,30 +16,41 @@ class Block:
     Store blocks ina chain that supports the cryptocurrency
     """
 
-    def __init__(self, timestamp, lastHash, hash, data):
+    def __init__(self, timestamp, lastHash, hash, data, difficulty, nonce):
         self.timestamp = timestamp
         self.lastHash = lastHash
         self.hash = hash
         self.data = data
+        self.difficulty = difficulty
+        self.nonce = nonce
 
     def __repr__(self):
         return (
             'Block('
-            f'timestamp: {self.timestamp},'
-            f'lastHash: {self.lastHash},'
-            f'hash: {self.hash},'
-            f'data: {self.data})'
+            f'timestamp: {self.timestamp}, '
+            f'lastHash: {self.lastHash}, '
+            f'hash: {self.hash}, '
+            f'data: {self.data}, '
+            f'difficulty: {self.difficulty}, '
+            f'nonce: {self.nonce})'
         )
 
     @staticmethod
     def mineBlock(lastBlock, data):
         """
         Mine a block based on the given lastBlock and data
+        Until it find a block hash that meets the PoW requirement
         """
         timestamp = time.time_ns()
         lastHash = lastBlock.hash
-        hash = cryptoHash(timestamp, lastHash, data)
-        return Block(timestamp, lastHash, hash, data)
+        difficulty = lastBlock.difficulty
+        nonce = 0
+        hash = cryptoHash(timestamp, lastHash, data, difficulty, nonce)
+        while hash[0:difficulty] != '0' * difficulty:
+            nonce += 1
+            timestamp = time.time_ns()
+            hash = cryptoHash(timestamp, lastHash, data, difficulty, nonce)
+        return Block(timestamp, lastHash, hash, data, difficulty, nonce)
 
     @staticmethod
     def genesis():

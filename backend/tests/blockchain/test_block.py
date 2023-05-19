@@ -8,6 +8,8 @@ def testMineBlock():
     assert isinstance(block, Block)
     assert block.data == data
     assert block.lastHash == lastBlock.hash
+    assert block.hash[:block.difficulty] == "0" * block.difficulty
+
 
 def testGenesis():
     genesis = Block.genesis()
