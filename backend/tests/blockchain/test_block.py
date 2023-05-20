@@ -1,9 +1,8 @@
 
-
-
-
 import time
+
 from backend.blockchain.block import Block, GENESIS_DATA
+from backend.utils.hex2bin import hexToBinary
 from backend.config import MINE_RATE, SECONDS
 
 def testMineBlock():
@@ -14,7 +13,7 @@ def testMineBlock():
     assert isinstance(block, Block)
     assert block.data == data
     assert block.lastHash == lastBlock.hash
-    assert block.hash[:block.difficulty] == "0" * block.difficulty
+    assert hexToBinary(block.hash)[:block.difficulty] == "0" * block.difficulty
 
 
 def testGenesis():

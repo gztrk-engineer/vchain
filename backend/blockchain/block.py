@@ -1,11 +1,13 @@
 import time
 
+
 from backend.utils.crypto_hash import cryptoHash
+from backend.utils.hex2bin import hexToBinary
 from backend.config import MINE_RATE
 
 GENESIS_DATA = {
     'timestamp': 1,
-    'last_hash': 'genesis_last_hash',
+    'lastHash': 'genesis_last_hash',
     'hash': 'genesis_hash',
     'data': [],
     'difficulty': 3,
@@ -17,9 +19,9 @@ class Block:
     Block: a unit of storage.
     Store transactions in a blockchain that supports a cryptocurrency.
     """
-    def __init__(self, timestamp, last_hash, hash, data, difficulty, nonce):
+    def __init__(self, timestamp, lastHash, hash, data, difficulty, nonce):
         self.timestamp = timestamp
-        self.last_hash = last_hash
+        self.lastHash = lastHash
         self.hash = hash
         self.data = data
         self.difficulty = difficulty
@@ -29,7 +31,7 @@ class Block:
         return (
             'Block('
             f'timestamp: {self.timestamp}, '
-            f'last_hash: {self.last_hash}, '
+            f'lastHash: {self.lastHash}, '
             f'hash: {self.hash}, '
             f'data: {self.data}, '
             f'difficulty: {self.difficulty}, '
@@ -48,7 +50,7 @@ class Block:
         nonce = 0
         hash = cryptoHash(timestamp, last_hash, data, difficulty, nonce)
 
-        while hash[0:difficulty] != '0' * difficulty:
+        while hexToBinary(hash)[0:difficulty] != '0' * difficulty:
             nonce += 1
             timestamp = time.time_ns()
             difficulty = Block.adjust_difficulty(last_block, timestamp)
