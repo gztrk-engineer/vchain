@@ -74,16 +74,50 @@ class Block:
         """
         if (new_timestamp - last_block.timestamp) < MINE_RATE:
             return last_block.difficulty + 1
-
         if (last_block.difficulty - 1) > 0:
             return last_block.difficulty - 1
-
         return 1
 
+    @staticmethod
+    def isValidBlock(lastBlock, block):
+        """
+        Validate a block by enforcing rules
+          * Must have a proper lastHash reference
+          * Must meet the proof of work requirement
+          * Difficulty must adjust by 1
+          * Valid block hash
+        """
+
+        if block.lastHash != lastBlock.hash:
+            raise Exception("last_hash must be correct")
+        if hexToBinary(block.hash)[0:block.difficulty] != "0"* block.difficulty:
+            raise Exception("The proof of work requirement was not met")
+        if abs(lastBlock.difficulty - block.difficulty) != 1:
+            raise Exception("The block difficulty must only adjust by 1")
+
+        reconstructedHash = cryptoHash(
+            block.timestamp,
+            block.lastHash,
+            block.data,
+            block.nonce,
+            block.difficulty
+        )
+
+        if block.hash != reconstructedHash:
+            raise Exception("The black hash must be valid")
+
+
 if __name__ == "__main__":
-    genesis_block = Block.genesis()
-    block = Block.mineBlock(genesis_block, 'foo')
-    print(block)
+    genesisBlock = Block.genesis()
+    badBlock = Block.mineBlock(genesisBlock, "foo")
+    # badBlock.lastHash = "evilHash"
+    try:
+        Block.isValidBlock(badBlock, genesisBlock)
+    except Exception as e:
+        print(f"Is valid block: {e}")
+    # Block.isValidBlock(badBlock, genesisBlock)
+    # block = Block.mineBlock(genesis_block, 'foo')
+    # print(block)
 
 
 
