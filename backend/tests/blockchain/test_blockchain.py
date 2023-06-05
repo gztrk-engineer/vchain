@@ -30,6 +30,25 @@ def testIsValidChainBadGeneis(returnBlockchain3Blocks):
     with pytest.raises(Exception, match="The genesis block must be valid"):
         Blockchain.isValidChain(returnBlockchain3Blocks.chain)
 
+def testReplaceChain(returnBlockchain3Blocks):
+    blockchain = Blockchain()
+    blockchain.replaceChain(returnBlockchain3Blocks.chain)
+    assert blockchain.chain == returnBlockchain3Blocks.chain
+
+def testReplaceChainCheckLength(returnBlockchain3Blocks):
+    blockchain = Blockchain()
+    with pytest.raises(Exception, match="The incoming chain must be longer."):
+        returnBlockchain3Blocks.replaceChain(blockchain.chain)
+
+def testReplaceChainBadChain(returnBlockchain3Blocks):
+    blockchain = Blockchain()
+    returnBlockchain3Blocks.chain[1].hash = "bad-hash"
+    with pytest.raises(Exception, match="The incoming chain must be valid"):
+        blockchain.replaceChain(returnBlockchain3Blocks.chain)
+
+
+
+
 # def testIsValidChain():
 #     blockchain = Blockchain()
 #     for i in range (3):
