@@ -24,10 +24,7 @@ You can add the safe versions to `requirements.txt`.
 
 To :
 ```commandline
-pip uninstall itsdangerous
-pip uninstall Jinja2
-pip uninstall MarkupSafe
-pip uninstall Werkzeug
+pip uninstall itsdangerous Jinja2 MarkupSafe Werkzeug
 pip install itsdangerous==1.1.0
 pip install Jinja2==2.10.1
 pip install MarkupSafe==1.1.1

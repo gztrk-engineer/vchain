@@ -1,6 +1,5 @@
 import time
 
-
 from backend.utils.crypto_hash import cryptoHash
 from backend.utils.hex2bin import hexToBinary
 from backend.config import MINE_RATE
@@ -40,6 +39,13 @@ class Block:
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
+
+    def toJson(self):
+        """
+        Serialize a Block object into a dictionary
+        """
+        return self.__dict__
+
 
     @staticmethod
     def mineBlock(last_block, data):

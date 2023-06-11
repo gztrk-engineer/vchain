@@ -31,6 +31,17 @@ class Blockchain:
 
         self.chain = chain
 
+    def toJson(self):
+        """
+        Serialize a blockchain into the list of blocks
+        """
+        # blockList = []
+        # for block in self.chain:
+        #     blockList.append(block.toJson())
+
+        return list(map(lambda block: block.toJson(), self.chain))
+
+
 
 
 
